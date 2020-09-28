@@ -1,12 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList } from 'react-native';
 
-const Screen = props => {
-    return (<></>);
+// comps
+import MealItem from '../components/MealItem';
+
+// data
+import { CATEGORIES } from '../data/dummy-data';
+import { MEALS } from '../data/dummy-data-meal';
+
+const CategoryMealScreen = props => {
+    const categoryId = props.navigation.getParam('categoryId');
+    const meals = MEALS.filter(meal => meal.categoryIds.indexOf(categoryId) >= 0);
+
+    // functions
+    const renderMeal = (itemData) => {
+        return <MealItem itemData={itemData} onPress={onPress} />
+    };
+    const onPress = () => {};
+
+    return (
+        <View>
+            <FlatList 
+                data={meals}
+                renderItem={renderMeal}
+            />
+            <Button title='Start Over' onPress={() => props.navigation.popToTop()} />
+        </View>
+    );
 };
 
-const styles = StyleSheet.create({
+CategoryMealScreen.navigationOptions = (navigationData) => {
+    const categoryId = navigationData.navigation.getParam('categoryId');
+    const selectedCategory = CATEGORIES.find(item => item.id === categoryId);
+    return {
+        headerTitle: selectedCategory.title
+    };
+};
 
-});
-
-export default Screen;
+export default CategoryMealScreen;
