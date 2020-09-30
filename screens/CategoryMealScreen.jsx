@@ -14,13 +14,15 @@ const CategoryMealScreen = props => {
 
     // functions
     const renderMeal = (itemData) => {
-        return <MealItem itemData={itemData} onPress={onPress} />
-    };
-    const onPress = () => {};
+        return <MealItem itemData={itemData} onPress={() => {
+            props.navigation.navigate({ routeName: 'MealDetails', params: { mealId: itemData.item.id }});
+        }}
+        />
+    };    
 
     return (
         <View>
-            <FlatList 
+            <FlatList
                 data={meals}
                 renderItem={renderMeal}
             />
