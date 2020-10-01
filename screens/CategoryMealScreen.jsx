@@ -1,33 +1,19 @@
 import React from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 
 // comps
-import MealItem from '../components/MealItem';
+import MealList from '../components/MealList';
 
 // data
 import { CATEGORIES } from '../data/dummy-data';
-import { MEALS } from '../data/dummy-data-meal';
 
 const CategoryMealScreen = props => {
     const categoryId = props.navigation.getParam('categoryId');
-    const meals = MEALS.filter(meal => meal.categoryIds.indexOf(categoryId) >= 0);
-
-    // functions
-    const renderMeal = (itemData) => {
-        return <MealItem itemData={itemData} onPress={() => {
-            props.navigation.navigate({ routeName: 'MealDetails', params: { mealId: itemData.item.id }});
-        }}
-        />
-    };    
+    const availableMeals = useSelector(state => state.meals.filteredMeals);
+    const meals = availableMeals.filter(meal => meal.categoryIds.indexOf(categoryId) >= 0);
 
     return (
-        <View>
-            <FlatList
-                data={meals}
-                renderItem={renderMeal}
-            />
-            <Button title='Start Over' onPress={() => props.navigation.popToTop()} />
-        </View>
+        <MealList meals={meals} navigation={props.navigation} />
     );
 };
 

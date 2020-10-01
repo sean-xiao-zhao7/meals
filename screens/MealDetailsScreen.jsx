@@ -1,29 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useSelector } from 'react-redux';
 
-// data
-import { MEALS } from '../data/dummy-data-meal';
+// comps
+import HeaderButton from '../components/HeaderButton';
+
+// styles
+import styles from '../styles/styles';
 
 const MealDetailsScreen = props => {
+    const availableMeals = useSelector(state => state.meals.filteredMeals);
+
     const mealId = props.navigation.getParam('mealId');
-    const meal = MEALS.find(meal => meal.id === mealId);
+    const meal = availableMeals.find(meal => meal.id === mealId);
 
     return (
-        <View>
+        <ScrollView>
+            <Image source={{uri: meal.imageUrl}} style={styles.image} />
             <Text>{meal.title}</Text>
-        </View>
+        </ScrollView>
     );
 };
 
-const styles = StyleSheet.create({
-
-});
-
 MealDetailsScreen.navigationOptions = (navigationData) => {
-    const id = navigationData.navigation.getParam('mealId');
+    const title = navigationData.navigation.getParam('title');
     return {
-        headerTitle: MEALS.find(meal => meal.id === id).title
+        headerTitle: title,
+        headerRight: () => <HeaderButtons
+            HeaderButtonComponent={HeaderButton}
+        >
+            <Item title='Favorite' iconName='ios-star' onPress={
+                () => {}
+            } />
+        </HeaderButtons>
     }
 };
 
-export default MealDetailsScreen;
+export default MealDetailsScreen
