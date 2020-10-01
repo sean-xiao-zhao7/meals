@@ -23,7 +23,6 @@ const MealList = props => {
                 data={props.meals}
                 renderItem={renderMeal}
             />
-            <Button title='Start Over' onPress={() => props.navigation.popToTop()} />
         </View>
     );
 };

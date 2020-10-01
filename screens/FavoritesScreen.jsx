@@ -1,6 +1,7 @@
 import React from 'react';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector } from 'react-redux';
+import { Text } from 'react-native';
 
 // comps
 import MealList from '../components/MealList';
@@ -9,7 +10,9 @@ import HeaderButton from '../components/HeaderButton';
 const FavoritesScreen = props => {
     const favoriteMeals = useSelector(state => state.meals.favoriteMeals)
     return (
-        <MealList meals={favoriteMeals} navigation={props.navigation} />             
+        !favoriteMeals 
+        ? <MealList meals={favoriteMeals} navigation={props.navigation} />
+        : <Text>No favorites</Text>
     );
 };
 

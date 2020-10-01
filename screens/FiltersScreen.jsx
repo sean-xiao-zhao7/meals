@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch } from 'react-redux';
+
+// actions
+import { setFilters as setFiltersAction } from '../store/actions/meals';
 
 // comps
 import HeaderButton from '../components/HeaderButton';
@@ -22,6 +26,8 @@ const FilterScreen = props => {
     const [bigVeg, setBigVeg] = useState(false);
     const [notfood, setNotfood] = useState(false);
 
+    const dispatch = useDispatch();
+
     const setFilters = useCallback(() => {
         const filters = {
             gluten:gluten,
@@ -29,7 +35,9 @@ const FilterScreen = props => {
             bVeg:bigVeg,
             nf:notfood,
         };
-    }, [gluten, veg, bigVeg, notfood]);
+
+        dispatch(setFiltersAction(filters));        
+    }, [gluten, veg, bigVeg, notfood, dispatch]);
 
     useEffect(() => {
         navigation.setParams({filters: setFilters});
@@ -55,7 +63,7 @@ FilterScreen.navigationOptions = navData => {
         </HeaderButtons>,
         headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <Item title='Menu' iconName='md-checkmark-circle-outline' onPress={() => {
-                prnavDataops.navigation.getParam('filters')()
+                navData.navigation.getParam('filters')()
             }} />
         </HeaderButtons>,
         drawerLabel: 'Meals Options'

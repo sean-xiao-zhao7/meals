@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Text } from 'react-native';
 
 // comps
 import MealList from '../components/MealList';
@@ -13,7 +14,9 @@ const CategoryMealScreen = props => {
     const meals = availableMeals.filter(meal => meal.categoryIds.indexOf(categoryId) >= 0);
 
     return (
-        <MealList meals={meals} navigation={props.navigation} />
+        meals.length <= 0
+        ? <Text>No meals</Text>
+        : <MealList meals={meals} navigation={props.navigation} />
     );
 };
 
